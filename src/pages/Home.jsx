@@ -6,14 +6,45 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
 import Card from 'react-bootstrap/Card';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getCategories } from '../helpers/category';
+import { addCart, updateCart } from '../redux/slices/cartSlice';
+import { FaConciergeBell } from 'react-icons/fa';
 
 function Home() {
 
+  const dispatch = useDispatch();
   const categories = getCategories();
 
   const topPicks = useSelector(state => state.dishes.filter(dishes => dishes.isTopPick));
+  const loggedUser = JSON.parse(localStorage.getItem('user'));
+  const userId = loggedUser.id;
+
+  const cartDishes = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+
+  const handleCart = (dishId, dishPrice, dishName, dishImage) => {
+
+    const existing = cartDishes.find(cart => cart.dish == dishId);
+
+    if (existing) {
+
+      dispatch(updateCart({ id: existing.id, user: userId, dish: dishId, price: dishPrice, name: dishName, image: dishImage, quantity: existing.quantity + 1 }));
+      return;
+    }
+
+    const cartData = {
+      id: Date.now(),
+      user: loggedUser.id,
+      dish: dishId,
+      price: dishPrice,
+      name: dishName,
+      image: dishImage,
+      price: dishPrice,
+      quantity: 1
+    }
+
+    dispatch(addCart(cartData));
+  }
 
   return (
     <>
@@ -107,9 +138,17 @@ function Home() {
 
       <Container className="mt-3 mb-5">
         <h3 className="pb-3 text-center">Top Picks Near You</h3>
-        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-          {topPicks.length ? (
-            topPicks.map(dish => (
+
+        {topPicks.length === 0 ? (
+          <div className='text-center'>
+            <FaConciergeBell size={80} color="gray" className="mb-4" />
+            <h3 className="text-muted">No Top Picks Available</h3>
+            <p className="text-secondary">We’re curating the best dishes for you. Check back soon!</p>
+          </div>
+
+        ) : (
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+            {topPicks.map(dish => (
               <Col key={dish.id}>
                 <Card className="h-100 shadow-sm">
                   <Card.Img
@@ -123,14 +162,14 @@ function Home() {
                       {dish.details}
                     </Card.Text>
                     <Card.Text>₹{dish.price}</Card.Text>
+                    <Button variant="danger" onClick={() => handleCart(dish.id, dish.price, dish.name, dish.image)}>Add To Cart</Button>
                   </Card.Body>
                 </Card>
               </Col>
-            ))
-          ) : (
-            <p className="text-center">No top picks available right now.</p>
-          )}
-        </Row>
+            ))}
+          </Row>
+        )}
+
       </Container>
     </>
 

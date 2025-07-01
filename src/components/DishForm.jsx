@@ -7,11 +7,11 @@ function DishForm({ editingDish, setEditingDish }) {
 
     const dispatch = useDispatch();
 
-    const [name, setName] = useState();
-    const [price, setPrice] = useState();
-    const [category, setCategory] = useState();
-    const [details, setDetails] = useState();
-    const [image, setImage] = useState();
+    const [name, setName] = useState("");
+    const [price, setPrice] = useState("");
+    const [category, setCategory] = useState("");
+    const [details, setDetails] = useState("");
+    const [image, setImage] = useState("");
     const [isTopPick, setIsTopPick] = useState(false);
 
     
@@ -80,13 +80,13 @@ function DishForm({ editingDish, setEditingDish }) {
     return (
         <form className="mb-4" onSubmit={handleSubmit}>
             <div className="row g-2">
-                <div className="col">
+                <div className="col-12 col-md">
                     <input type="text" placeholder="Enter Dish Name" className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
-                <div className="col">
+                <div className="col-12 col-md">
                     <input type="number" placeholder="Enter Dish Price" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} />
                 </div>
-                <div className="col">
+                <div className="col-12 col-md">
                     <select placeholder="Choose Dish Category" className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} >
                         <option value="">Choose Dish Category</option>
                         {categories.map((category, index) => {
@@ -97,20 +97,20 @@ function DishForm({ editingDish, setEditingDish }) {
                         }
                     </select>
                 </div>
-                <div className="col">
+                <div className="col-12 col-md">
                     <textarea placeholder="Enter Dish details" className="form-control" value={details} onChange={(e) => setDetails(e.target.value)} />
                 </div>
-                <div className="col">
+                <div className="col-12 col-md">
                     <input type="file" className="form-control" accept="image/*" onChange={handleImageChange} />
                 </div>
-                <div className="col-auto form-check">
+                <div className="col-12 col-md-auto form-check">
                     <input type="checkbox" id="topPick" className="form-check-input" checked={isTopPick} onChange={e => setIsTopPick(e.target.checked)} />
                     <label htmlFor="topPick" className="form-check-label">
                         Top Pick
                     </label>
                 </div>
                 {image && <img src={image} alt="Preview" style={{ height: '100px', width: '100px' }} className="mb-2" />}
-                <div className="col-auto">
+                <div className="col-12 col-md-auto">
                     <button type="submit" className={`btn ${editingDish ? 'btn-warning' : 'btn-success'}`}>
                         {editingDish ? 'Update' : 'Add'} Dish
                     </button>

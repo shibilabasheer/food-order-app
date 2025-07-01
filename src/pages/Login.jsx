@@ -15,15 +15,17 @@ function Login() {
     e.preventDefault();
 
     const adminCredentials = getAdminCredentials();
-    const savedUser = JSON.parse(localStorage.getItem('user'));
+    const savedUsers = JSON.parse(localStorage.getItem('allUsers')) || [];
+    const user = savedUsers.find((item)=> item.email === form.email && item.password === form.password)
+    console.log(user)
 
     if (adminCredentials.email == form.email && adminCredentials.password == form.password) {
       dispatch(login({ email:form.email, role: adminCredentials.role }));
-      navigate('/admin')
+      navigate('/products')
     }
 
-    else if (savedUser && savedUser.email === form.email && savedUser.password === form.password) {
-      dispatch(login(savedUser));
+    else if (user) {
+      dispatch(login(user));
       navigate('/home');
     }
 

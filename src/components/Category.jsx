@@ -6,15 +6,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { addCart , updateCart} from '../redux/slices/cartSlice';
+import { addCart, updateCart } from '../redux/slices/cartSlice';
 
 function Category() {
 
   const dispatch = useDispatch();
   const { id } = useParams()
   const allDishes = useSelector(state => state.dishes);
-  const loggedUser = useSelector(state => state.user);
- 
+  const loggedUser = JSON.parse(localStorage.getItem('user'));
+  const userId = loggedUser.id;
+
   const [categoryDishes, setCategoryDishes] = useState([]);
 
   useEffect(() => {
@@ -25,30 +26,32 @@ function Category() {
   }, [id])
 
 
-  const cartDishes = useSelector(state => state.cart);
+  const cartDishes = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
-  const handleCart = (dishId) => {
+  const handleCart = (dishId, dishPrice, dishName, dishImage) => {
 
     const existing = cartDishes.find(cart => cart.dish == dishId);
 
     if (existing) {
-      dispatch(updateCart({ id:existing.id,user:loggedUser.user.id,dish: dishId, quantity: existing.quantity + 1 }));
+
+      dispatch(updateCart({ id: existing.id, user: userId, dish: dishId, price: dishPrice, name: dishName, image: dishImage, quantity: existing.quantity + 1 }));
       return;
     }
 
     const cartData = {
       id: Date.now(),
-      user:loggedUser.user.id,
+      user: loggedUser.id,
       dish: dishId,
+      price: dishPrice,
+      name: dishName,
+      image: dishImage,
+      price: dishPrice,
       quantity: 1
     }
 
     dispatch(addCart(cartData));
   }
-
   console.log(cartDishes)
-  
-
 
   return (
     <Container className="mt-3 mb-5">
@@ -70,14 +73,15 @@ function Category() {
                   </Card.Text>
                   <Card.Text>₹{dish.price}</Card.Text>
 
-                  <Button variant="danger" onClick={()=>handleCart(dish.id)}>Add To Cart</Button>
+                  <Button variant="danger" onClick={() => handleCart(dish.id, dish.price, dish.name, dish.image)}>Add To Cart</Button>
 
                 </Card.Body>
               </Card>
             </Col>
           ))
         ) : (
-          <p className="text-center">No top picks available right now.</p>
+          <p className="text-center fw-semibold h5">No dishes available</p>
+          
         )}
       </Row>
     </Container>

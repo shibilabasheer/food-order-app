@@ -1,49 +1,63 @@
-
-import { NavLink , useNavigate} from 'react-router-dom';
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import { FaInfoCircle, FaHome, FaUser } from 'react-icons/fa';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { useDispatch } from 'react-redux';  
+import React, { useState } from 'react';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { FaInfoCircle, FaHome, FaUser, FaUsers, FaBars } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 import { logout } from '../redux/slices/userSlice';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../assets/Sidebar.css';
 
 function AdminHeader() {
-
-    const dispatch = useDispatch();     
-    const navigate = useNavigate();           
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [expanded, setExpanded] = useState(false);
 
     const handleLogout = () => {
-        dispatch(logout())
+        dispatch(logout());
         navigate('/');
-    }
+    };
 
     const linkClass = ({ isActive }) =>
-        `px-4 fw-semibold nav-link d-flex align-items-center ${isActive ? 'text-black' : 'text-white'}`;
+        `fw-semibold nav-link d-flex align-items-center ${isActive ? 'text-black' : 'text-white'}`;
+    
+    const dropdownItemClass = 'd-flex align-items-center gap-2';
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="danger" data-bs-theme="dark" className="px-4">
-            <Container fluid className="d-flex align-items-center">
-                <Navbar.Brand className="d-flex align-items-center">
-                    <img src="/logo2.png" alt="Logo" style={{ height: '60px', width: '60px', objectFit: 'contain' }} className="me-2" />
+        <Navbar bg="danger" expand="lg" variant="dark" expanded={expanded} className="px-3">
+            <Container fluid>
+                <Navbar.Brand as={Link} to="/">
+                    <img src="/logo2.png" alt="Logo" style={{ height: '50px', width: '50px', objectFit: 'contain' }} className="me-2"/>
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
-                <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
-                    <Nav>
-                        <NavLink onClick={handleLogout} className={linkClass}>
-                            <FaInfoCircle size={15} className="mx-1" />
-                            Logout
+                {/* Toggle button for small devices */}
+                <Navbar.Toggle onClick={() => setExpanded(prev => !prev)} aria-controls="admin-navbar-nav" />
+
+                <Navbar.Collapse id="admin-navbar-nav">
+                    <Nav className="ms-auto align-items-center">
+                        <NavLink to="/products" className={linkClass}>
+                            <FaInfoCircle className="me-2" /> Products
                         </NavLink>
-                        <NavLink to="/profile" className={linkClass}>
-                            <FaUser size={15} className="mx-1" />
-                            Profile
+                        <NavLink to="/allorders" className={linkClass}>
+                            <FaBars className="me-2" /> Orders
                         </NavLink>
+
+                        <NavLink to="/allusers" className={linkClass}>
+                            <FaUsers className="me-2" /> Users
+                        </NavLink>
+
+                        <NavDropdown title={<span className="text-white">Admin</span>} id="admin-nav-dropdown">
+                            <NavDropdown.Item as={Link} to="/adminprofile" className={dropdownItemClass}>
+                                <FaUser /> Profile
+                            </NavDropdown.Item>
+                            <NavDropdown.Item onClick={handleLogout} className={dropdownItemClass}>
+                                <FaInfoCircle /> Logout
+                            </NavDropdown.Item>
+                        </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
     );
-
 }
 
 export default AdminHeader;

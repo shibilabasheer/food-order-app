@@ -1,0 +1,93 @@
+import React from 'react'
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
+import { FaShoppingBag } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+
+function AllOrders() {
+  const navigate = useNavigate();
+
+    const loggedUser = JSON.parse(localStorage.getItem('user'));
+    const userId = loggedUser.id;
+    console.log(userId)
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    console.log(orders)
+
+    const dateOptions = { year: "numeric", month: "long", day: "numeric" };
+
+    return (
+        <Container className='mt-4'>
+
+            {orders.length === 0 ? (
+                <>
+                    <div className='text-center'>
+                        <FaShoppingBag size={80} color="gray" className="mb-4" />
+                        <h3 className="text-muted">No Order History</h3>
+                        <p className="text-secondary">No orders placed yet!</p>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <h3 className="pb-3 text-center">All Orders</h3>
+                    <Table bordered hover size="sm" className="table-sm">
+                        <thead>
+                            <tr>
+                                <th className="text-center p-1">Date</th>
+                                <th className='text-center p-1'>Items</th>
+                                <th className="text-center p-1">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map((order, index) => {
+                                const formattedDate = new Date(order.date).toLocaleDateString(
+                                    "en-US",
+                                    dateOptions
+                                );
+
+                                return (
+                                    
+                                        <tr key={index} className="align-middle">
+
+                                            <td className="text-center p-1">{formattedDate}</td>
+                                            <td>
+
+                                                <Table striped bordered hover>
+                                                    <thead>
+                                                        <tr>
+                                                            <td>Image</td>
+                                                            <td>Dish</td>
+                                                            <td>Price</td>
+                                                            <td>Quantity</td>
+                                                            <td>Total</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {order.items.map((item, i) => {
+                                                            return (
+                                                                <tr key={i}>
+                                                                    <td><img src={item.image} alt={item.name} width="60" /></td>
+                                                                    <td>{item.name}</td>
+                                                                    <td>{item.price}</td>
+                                                                    <td>{item.quantity}</td>
+                                                                    <td>{item.quantity * item.price}</td>
+                                                                </tr>
+                                                            );
+                                                        })}
+                                                    </tbody>
+                                                </Table>
+                                            </td>
+                                            <td className="text-center p-1">{order.total}</td>
+                                        </tr>
+                                    
+                                );
+                            })}
+                        </tbody>
+                    </Table>
+                </>
+            )}
+        </Container>
+    )
+}
+
+export default AllOrders
