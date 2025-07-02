@@ -120,7 +120,7 @@ function Home() {
         <Row>
           <h3 className='pb-3 text-center'>Explore Our Categories</h3>
           {categories.map((cat, index) => (
-            <Col key={index} md={1} className='m-2'>
+            <Col key={index} md={2} sm={3} lg={1} xs={3} className='m-2'>
               <Card className="text-center border-0 shadow-sm" style={{ width: '100px' }}>
                 <Card.Img variant="top" src={cat.image} style={{ height: '60px', objectFit: 'cover', borderRadius: '8px' }} />
                 <Card.Body className="p-2">

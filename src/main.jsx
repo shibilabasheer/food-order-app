@@ -18,6 +18,8 @@ import Products from './pages/admin/Products.jsx';
 import DishCart from './pages/DishCart.jsx';
 import AllOrders from './pages/admin/AllOrders.jsx';
 import AllUsers from './pages/admin/AllUsers.jsx';
+import About from './pages/About.jsx';
+import Contact from './pages/Contact.jsx';
 
 const router = createBrowserRouter([
   {
@@ -89,6 +91,28 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <OrderHistory />
+      },
+    ],
+  },
+  {
+    path: "about",
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <About/>
+      },
+    ],
+  },
+  {
+    path: "contact",
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Contact/>
       },
     ],
   },

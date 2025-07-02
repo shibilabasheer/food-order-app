@@ -25,7 +25,6 @@ function Category() {
     }
   }, [id])
 
-
   const cartDishes = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
   const handleCart = (dishId, dishPrice, dishName, dishImage) => {
@@ -51,7 +50,9 @@ function Category() {
 
     dispatch(addCart(cartData));
   }
-  console.log(cartDishes)
+
+  //localStorage.removeItem(`cart_${userId}`);
+  //console.log(cartDishes)
 
   return (
     <Container className="mt-3 mb-5">

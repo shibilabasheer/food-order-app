@@ -24,12 +24,8 @@ function Header() {
         navigate('/');
     }
 
-    /*useEffect(()=>{
-
-    },[cartCount])*/
-    const cartDishes = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
-    const cartCount = cartDishes.length;
-    console.log(cartCount)
+    const cart = useSelector(state => state.cart);
+    const cartCount = cart.filter(item => item.user === userId).length;
 
     const linkClass = ({ isActive }) =>
         `px-4 fw-semibold nav-link d-flex align-items-center ${isActive ? 'text-black' : 'text-white'}`;
@@ -43,7 +39,7 @@ function Header() {
                     <NavDropdown title={loggedUser.name} id="basic-nav-dropdown" className='text-white'>
                         <NavDropdown.Item as={Link} to="/profile" className={linkClass}><FaUser size={15} className="mx-1" />Profile</NavDropdown.Item>
                         <NavDropdown.Item as={Link} to="/orderHistory" className={linkClass}><FaInfoCircle size={15} className="mx-1" />Your Orders</NavDropdown.Item>
-                        <NavDropdown.Item onClick={handleLogout} className={linkClass}><FaInfoCircle size={15} className="mx-1" />Logout</NavDropdown.Item>   
+                        <NavDropdown.Item onClick={handleLogout} className={linkClass}><FaInfoCircle size={15} className="mx-1" />Logout</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </Navbar>

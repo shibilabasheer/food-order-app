@@ -54,6 +54,11 @@ function DishCart() {
         setTotal(total - item.price);
     };
 
+    const handleClearcart = () => {
+       localStorage.removeItem(`cart_${userId}`);
+       cartDishes("");
+    }
+
     //localStorage.removeItem(`cart_${userId}`);
 
     return (
@@ -103,6 +108,10 @@ function DishCart() {
                             <Link to="/order" className="btn btn-danger">
                                 Proceed to Order
                             </Link>
+
+                            <Link onClick={()=>handleClearcart()} className="m-3 btn btn-danger">
+                                Clear Cart
+                            </Link> 
                         </div>
 
                     </>
