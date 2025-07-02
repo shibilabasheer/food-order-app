@@ -2,7 +2,7 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
-import { FaUser } from 'react-icons/fa';
+import { FaUsers } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 
 function AllUsers() {
