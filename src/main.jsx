@@ -20,6 +20,7 @@ import AllOrders from './pages/admin/AllOrders.jsx';
 import AllUsers from './pages/admin/AllUsers.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
+import Dishes from './pages/Dishes.jsx';
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,17 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <OrderHistory />
+      },
+    ],
+  },
+  {
+    path: "dishes",
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Dishes />
       },
     ],
   },

@@ -19,7 +19,6 @@ function Home() {
   const topPicks = useSelector(state => state.dishes.filter(dishes => dishes.isTopPick));
   const loggedUser = JSON.parse(localStorage.getItem('user'));
   const userId = loggedUser.id;
-
   const cartDishes = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
 
   const handleCart = (dishId, dishPrice, dishName, dishImage) => {

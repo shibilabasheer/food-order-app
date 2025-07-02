@@ -7,7 +7,7 @@ function Footer() {
       <Container>
         <Row>
           <Col md={6}>
-            <p className="mb-0">&copy; 2025 Company</p>
+            <p className="mb-0">&copy; 2025 Tastique</p>
           </Col>
           <Col md={6} className="text-md-end">
             <a href="/about" className="text-light text-decoration-none me-4">About Us</a>

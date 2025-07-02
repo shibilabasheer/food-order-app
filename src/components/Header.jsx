@@ -1,51 +1,88 @@
-
+import React, { useState, useEffect } from 'react'
 import Nav from 'react-bootstrap/Nav';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
-import { useSelector } from 'react-redux';
-import { FaInfoCircle, FaHome, FaUser, FaShoppingCart } from 'react-icons/fa';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useDispatch } from 'react-redux';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { FaInfoCircle, FaHome, FaUser, FaShoppingCart ,FaSun,FaMoon} from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/slices/userSlice';
-import { useEffect } from 'react';
 
-function Header() {
-
+function Header({ onNameSearch }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const loggedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    const userId = loggedUser?.id;
 
-    const loggedUser = JSON.parse(localStorage.getItem('user'));
-    const userId = loggedUser.id;
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+    const cartCount = useSelector(state =>
+        state.cart.filter(item => item.user === userId).length
+    );
 
     const handleLogout = () => {
-
-        dispatch(logout())
+        dispatch(logout());
         navigate('/');
-    }
+    };
 
-    const cart = useSelector(state => state.cart);
-    const cartCount = cart.filter(item => item.user === userId).length;
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    };
 
     const linkClass = ({ isActive }) =>
         `px-4 fw-semibold nav-link d-flex align-items-center ${isActive ? 'text-black' : 'text-white'}`;
 
+    useEffect(() => {
+        document.body.className = theme === 'dark' ? 'bg-dark text-white' : 'bg-light text-dark';
+    }, [theme]);
+
     return (
         <>
-            <Navbar collapseOnSelect expand="lg" bg="danger" data-bs-theme="dark" className="d-flex justify-content-between px-4 ">
-                <div><img src="/logo2.png" alt="Logo" style={{ height: '60px', width: '60px', objectFit: 'contain' }} className="me-2" /></div>
-                <Nav>
-                    <NavLink to="/cart" className={linkClass}><FaShoppingCart size={15} className="mx-1" /> Cart <span className="badge bg-white ms-2 text-black">{cartCount}</span></NavLink>
-                    <NavDropdown title={loggedUser.name} id="basic-nav-dropdown" className='text-white'>
-                        <NavDropdown.Item as={Link} to="/profile" className={linkClass}><FaUser size={15} className="mx-1" />Profile</NavDropdown.Item>
-                        <NavDropdown.Item as={Link} to="/orderHistory" className={linkClass}><FaInfoCircle size={15} className="mx-1" />Your Orders</NavDropdown.Item>
-                        <NavDropdown.Item onClick={handleLogout} className={linkClass}><FaInfoCircle size={15} className="mx-1" />Logout</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-            </Navbar>
-        </>
-    )
+            <Navbar collapseOnSelect expand="lg" bg={theme === 'dark' ? 'dark' : 'danger'} data-bs-theme="dark" className="px-4">
+                <Navbar.Brand as={Link} to="/home" className="d-flex align-items-center">
+                    <img src="/logo2.png" alt="Logo" style={{ height: 60, width: 60, objectFit: 'contain' }} className="me-2" />
+                </Navbar.Brand>
 
+                <Navbar.Toggle aria-controls="main-nav" />
+                <Navbar.Collapse id="main-nav" className="justify-content-end">
+                    <Nav>
+                        <NavLink to="/home" className={linkClass}>
+                            <FaHome size={15} className="mx-1" /> Home
+                        </NavLink>
+
+                        <NavLink to="/dishes" className={linkClass}>
+                            <FaInfoCircle size={15} className="mx-1" /> Dishes
+                        </NavLink>
+
+                        <NavLink to="/cart" className={linkClass}>
+                            <FaShoppingCart size={15} className="mx-1" />
+                            Cart&nbsp;
+                            <span className="badge bg-white text-black">{cartCount}</span>
+                        </NavLink>
+
+                        {loggedUser && (
+                            <NavDropdown title={loggedUser.name} id="user-nav-dropdown" className="text-white">
+                                <NavDropdown.Item as={Link} to="/profile" className="d-flex align-items-center">
+                                    <FaUser size={15} className="mx-1" /> Profile
+                                </NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/orderHistory" className="d-flex align-items-center">
+                                    <FaInfoCircle size={15} className="mx-1" /> Your Orders
+                                </NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleLogout} className="d-flex align-items-center">
+                                    <FaInfoCircle size={15} className="mx-1" /> Logout
+                                </NavDropdown.Item>
+                            </NavDropdown>
+                        )}
+                    </Nav>
+                    <button onClick={toggleTheme} className="btn btn-outline-light ms-3">
+                        {theme === 'dark' ? <FaSun /> : <FaMoon />}
+                    </button>
+                </Navbar.Collapse>
+            </Navbar>
+
+        </>
+    );
 }
 
 export default Header;
