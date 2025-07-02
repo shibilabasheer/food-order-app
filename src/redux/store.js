@@ -18,7 +18,7 @@ let cartDishes = [];
 if(userId)
 {
   const savedCart = localStorage.getItem(`cart_${userId}`);
-  //console.log(savedCart)
+  console.log(savedCart)
   cartDishes = savedCart ? JSON.parse(savedCart) : [];
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,11 +15,11 @@ function Home() {
 
   const dispatch = useDispatch();
   const categories = getCategories();
-
-  const topPicks = useSelector(state => state.dishes.filter(dishes => dishes.isTopPick));
   const loggedUser = JSON.parse(localStorage.getItem('user'));
   const userId = loggedUser.id;
-  const cartDishes = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+  const [cartDishes, setCartDishes] = useState(JSON.parse(localStorage.getItem(`cart_${userId}`)));
+
+  const topPicks = useSelector(state => state.dishes.filter(dishes => dishes.isTopPick));
 
   const handleCart = (dishId, dishPrice, dishName, dishImage) => {
 

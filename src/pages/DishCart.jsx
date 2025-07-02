@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import { FaShoppingCart } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearUserCart } from '../redux/slices/cartSlice';
 
 function DishCart() {
     const navigate = useNavigate();
@@ -11,7 +13,9 @@ function DishCart() {
     const loggedUser = JSON.parse(localStorage.getItem('user'));
     const userId = loggedUser.id;
 
-    const [cartDishes, setCategoryDishes] = useState(JSON.parse(localStorage.getItem(`cart_${userId}`)) || [])
+    const userDishes = useSelector(state => state.cart.filter(item => item.user == userId));
+
+    const [cartDishes, setCategoryDishes] = useState(userDishes)
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
@@ -55,8 +59,10 @@ function DishCart() {
     };
 
     const handleClearcart = () => {
-       localStorage.removeItem(`cart_${userId}`);
-       cartDishes("");
+        localStorage.removeItem(`cart_${userId}`);
+        dispatch(clearUserCart(userId));
+
+        cartDishes("");
     }
 
     //localStorage.removeItem(`cart_${userId}`);
@@ -109,9 +115,9 @@ function DishCart() {
                                 Proceed to Order
                             </Link>
 
-                            <Link onClick={()=>handleClearcart()} className="m-3 btn btn-danger">
+                            <Link onClick={() => handleClearcart()} className="m-3 btn btn-danger">
                                 Clear Cart
-                            </Link> 
+                            </Link>
                         </div>
 
                     </>

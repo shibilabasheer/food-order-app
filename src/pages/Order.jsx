@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { Container, Form, Button,Modal } from 'react-bootstrap';
+import { Container, Form, Button, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { clearUserCart } from '../redux/slices/cartSlice';
 
 function Order() {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem('user'));
   const cartDishes = JSON.parse(localStorage.getItem(`cart_${user.id}`)) || [];
 
@@ -37,10 +40,11 @@ function Order() {
     const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
     localStorage.setItem(`orders`, JSON.stringify([...allOrders, order]));
     localStorage.setItem(`orders_${user.id}`, JSON.stringify([...existingOrders, order]));
-    console.log(localStorage.getItem('orders'))
+    //console.log(localStorage.getItem('orders'))
 
     localStorage.removeItem(`cart_${user.id}`);
- 
+    dispatch(clearUserCart(user.id));
+
     setPlacedOrder(order);
     setShowModal(true);
   };
@@ -95,7 +99,7 @@ function Order() {
             <option value="upi">UPI</option>
           </Form.Select>
         </Form.Group>
-        <Button varint="primary" type="submit" className="w-100">
+        <Button variant="danger" type="submit" className="w-100">
           Place Order
         </Button>
       </Form>
