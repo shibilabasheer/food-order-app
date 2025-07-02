@@ -45,7 +45,7 @@ function DishForm({ editingDish, setEditingDish }) {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onloadend = () => setImage(reader.result);
+        reader.onload = () => setImage(reader.result);
         reader.readAsDataURL(file);
     };
 
@@ -78,6 +78,8 @@ function DishForm({ editingDish, setEditingDish }) {
     };
 
     return (
+        <>
+        <h5 className="pb-3 text-center">Add Dishes</h5>
         <form className="mb-4" onSubmit={handleSubmit}>
             <div className="row g-2">
                 <div className="col-12 col-md">
@@ -117,7 +119,8 @@ function DishForm({ editingDish, setEditingDish }) {
                 </div>
             </div>
         </form>
-
+<hr />
+</>
     )
 }
 

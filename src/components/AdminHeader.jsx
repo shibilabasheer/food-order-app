@@ -10,6 +10,8 @@ import '../assets/Sidebar.css';
 function AdminHeader() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [darkMode, setDarkMode] = useState(false);
     const [expanded, setExpanded] = useState(false);
 
     const handleLogout = () => {
@@ -18,24 +20,24 @@ function AdminHeader() {
     };
 
     const linkClass = ({ isActive }) =>
-        `fw-semibold nav-link d-flex align-items-center ${isActive ? 'text-black' : 'text-white'}`;
-    
+        `fw-semibold px-4 nav-link d-flex align-items-center ${isActive ? 'text-black' : 'text-white'}`;
+
     const dropdownItemClass = 'd-flex align-items-center gap-2';
 
     return (
         <Navbar bg="danger" expand="lg" variant="dark" expanded={expanded} className="px-3">
             <Container fluid>
                 <Navbar.Brand as={Link} to="/">
-                    <img src="/logo2.png" alt="Logo" style={{ height: '50px', width: '50px', objectFit: 'contain' }} className="me-2"/>
+                    <img src="/logo2.png" alt="Logo" style={{ height: '50px', width: '50px', objectFit: 'contain' }} className="me-2" />
                 </Navbar.Brand>
-
+            
                 {/* Toggle button for small devices */}
                 <Navbar.Toggle onClick={() => setExpanded(prev => !prev)} aria-controls="admin-navbar-nav" />
 
                 <Navbar.Collapse id="admin-navbar-nav">
                     <Nav className="ms-auto align-items-center">
                         <NavLink to="/products" className={linkClass}>
-                            <FaInfoCircle className="me-2" /> Products
+                            <FaInfoCircle className="me-2" /> Dishes
                         </NavLink>
                         <NavLink to="/allorders" className={linkClass}>
                             <FaBars className="me-2" /> Orders

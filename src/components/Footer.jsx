@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -11,8 +10,10 @@ function Footer() {
             <p className="mb-0">&copy; 2025 Company</p>
           </Col>
           <Col md={6} className="text-md-end">
-            <a href="#" className="text-light text-decoration-none me-5">Privacy Policy</a>
-            <a href="#" className="text-light text-decoration-none">Terms & Conditions</a>
+            <a href="/about" className="text-light text-decoration-none me-4">About Us</a>
+            <a href="/contact" className="text-light text-decoration-none me-4">Contact Us</a>
+            <a href="/privacy" className="text-light text-decoration-none me-4">Privacy Policy</a>
+            <a href="/terms" className="text-light text-decoration-none">Terms & Conditions</a>
           </Col>
         </Row>
       </Container>

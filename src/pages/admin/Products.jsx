@@ -10,7 +10,10 @@ function Products() {
 
     return (
         <>
-            <Container className="mt-5">
+           
+            <Container className="mt-4">
+                 <h3 className="text-center pb-3">All Dishes</h3>
+                 <hr/>
                 <DishForm editingDish={editingDish} setEditingDish={setEditingDish} />
                 <DishList editingDish={editingDish} setEditingDish={setEditingDish} />
             </Container>
